@@ -76,7 +76,7 @@ Aplikasi menggunakan Sequelize untuk mengelola relasi antar tabel berikut:
 * `GET /products`: Daftar barang (Semua User).
 * `POST /products`: Tambah barang baru (Admin Only).
 * `POST /products/:id/sell`: Transaksi penjualan.
-    * **Logika Bisnis:** Stok akan berkurang otomatis. Jika stok < jumlah jual, transaksi ditolak (Error 400).
+    * **Logika Bisnis:** Stok akan berkurang otomatis. Jika stok < jumlah jual, transaksi (disabled).
 
 ### 👥 Modul User (RBAC Management)
 * `GET /users`: List semua user (Admin Only).
