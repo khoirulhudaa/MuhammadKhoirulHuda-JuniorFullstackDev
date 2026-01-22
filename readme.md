@@ -1,4 +1,4 @@
-# Fullstack Inventory Management System (React & Express)
+# Fullstack Inventory Management System.
 
 Aplikasi manajemen inventaris barang dengan sistem **Role-Based Access Control (RBAC)**. Dibangun menggunakan React.js untuk Frontend dan Express.js dengan Sequelize ORM untuk Backend.
 
