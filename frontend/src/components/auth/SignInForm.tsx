@@ -6,7 +6,6 @@ import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
 
-// Ganti sesuai environment (development / production)
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5050";
 
 export default function SignInForm() {
