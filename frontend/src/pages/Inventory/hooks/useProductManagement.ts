@@ -6,7 +6,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5050
 
 export function useProductManagement() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -21,7 +21,6 @@ export function useProductManagement() {
   const [formPrice, setFormPrice] = useState("");
   const [formStock, setFormStock] = useState("");
 
-  // computed
   const isAdmin = currentUser?.role === "Admin";
   const canSell = isAdmin || currentUser?.role === "Seller";
 
@@ -33,15 +32,34 @@ export function useProductManagement() {
     }
   }, []);
 
+  // ── Auth check + early redirect
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    const storedUser = localStorage.getItem("user");
+
+    if (!token || !storedUser) {
+      window.location.href = "/signin";
+      return; 
+    }
+
+    try {
+      const parsedUser = JSON.parse(storedUser);
+      setCurrentUser(parsedUser);
+    } catch (err) {
+      console.error("Invalid user data in localStorage", err);
+      localStorage.removeItem("user");
+      localStorage.removeItem("accessToken");
+      window.location.href = "/signin";
+    }
+  }, []); 
+
   // ── Fetch products
   const fetchProducts = async () => {
     setLoading(true);
     setError(null);
-
+    
     try {
       const token = localStorage.getItem("accessToken");
-      if (!token) throw new Error("Anda belum login");
-
       const res = await fetch(`${API_BASE_URL}/product`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -53,7 +71,7 @@ export function useProductManagement() {
         const errData = await res.json();
         throw new Error(errData.message || `HTTP ${res.status}`);
       }
-
+      
       const data = await res.json();
       if (data.success) {
         setProducts(data.data || []);
@@ -69,10 +87,12 @@ export function useProductManagement() {
     }
   };
 
-  useEffect(() => {
-    if (currentUser) fetchProducts();
-  }, [currentUser]);
-
+useEffect(() => {
+  // Hanya fetch kalau currentUser sudah ada (sudah lolos pengecekan di atas)
+  if (currentUser) {
+    fetchProducts();
+  }
+}, [currentUser]);
   // ── Add product 
   const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,39 +140,30 @@ export function useProductManagement() {
 
   // ── Sell product
   const handleSell = async (product: Product, quantity = 1) => {
-    // Pengecekan stok di client-side terlebih dahulu
-    if (product.stock < quantity) {
-        toast.error(
-        product.stock === 0
-            ? `Stok ${product.name} sudah habis! Tidak bisa menjual.`
-            : `Stok ${product.name} tidak cukup! (sisa: ${product.stock}, diminta: ${quantity})`
-        );
-        return;
-    }
-
     if (!confirm(`Kurangi stok ${product.name} sebanyak ${quantity}?`)) return;
 
     try {
-        const token = localStorage.getItem("accessToken");
-        const res = await fetch(`${API_BASE_URL}/product/${product.id}/sell`, {
+      const token = localStorage.getItem("accessToken");
+      const res = await fetch(`${API_BASE_URL}/product/${product.id}/sell`, {
         method: "POST",
         headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ quantity }),
-        });
+      });
 
-        const data = await res.json();
+      const data = await res.json();
 
-        if (!res.ok || !data.success) {
+      if (!res.ok || !data.success) {
+        // Tampilkan pesan error langsung dari backend (paling akurat)
         throw new Error(data.message || "Gagal menjual produk");
-        }
+      }
 
-        toast.success(data.message || `Berhasil menjual ${quantity} unit ${product.name}`);
-        fetchProducts(); // refresh list
+      toast.success(data.message || `Berhasil menjual ${quantity} unit ${product.name}`);
+      fetchProducts(); // refresh list
     } catch (err: any) {
-        toast.error(err.message || "Terjadi kesalahan saat menjual produk");
+      toast.error(err.message || "Terjadi kesalahan saat menjual produk");
     }
   };
 

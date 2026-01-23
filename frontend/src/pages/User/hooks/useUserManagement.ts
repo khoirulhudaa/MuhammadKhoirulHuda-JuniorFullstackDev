@@ -1,9 +1,8 @@
-// src/hooks/useUserManagement.ts
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { User, UserRole } from "../types/user";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5005";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5050";
 
 export const useUserManagement = () => {
   // Auth & Current User
@@ -16,6 +15,27 @@ export const useUserManagement = () => {
   const [error, setError] = useState<string | null>(null);
   const [isFetching, setIsFetching] = useState(false);
 
+  // ── Auth check + early redirect
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    const storedUser = localStorage.getItem("user");
+
+    if (!token || !storedUser) {
+      window.location.href = "/signin";
+      return; 
+    }
+
+    try {
+      const parsedUser = JSON.parse(storedUser);
+      setCurrentUser(parsedUser);
+    } catch (err) {
+      console.error("Invalid user data in localStorage", err);
+      localStorage.removeItem("user");
+      localStorage.removeItem("accessToken");
+      window.location.href = "/signin";
+    }
+  }, []); 
+
   const fetchUsers = async () => {
     if (!isAdmin || isFetching) return;
 
@@ -25,8 +45,6 @@ export const useUserManagement = () => {
 
     try {
       const token = localStorage.getItem("accessToken");
-      if (!token) throw new Error("Anda belum login. Silakan login kembali.");
-
       const res = await fetch(`${API_BASE_URL}/user`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -78,10 +96,10 @@ export const useUserManagement = () => {
 
   // Fetch pertama kali saat halaman dimuat (hanya jika Admin)
   useEffect(() => {
-    if (isAdmin) {
+    if (isAdmin && currentUser) {
       fetchUsers();
     }
-  }, [isAdmin]);
+  }, [isAdmin, currentUser]);
 
   // Drawer States
   const [isDetailOpen, setIsDetailOpen] = useState(false);

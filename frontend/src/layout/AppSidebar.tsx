@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import { ChevronDown, Package, Users } from "lucide-react";
+import { ChevronDown, MoreHorizontal, Package, Users } from "lucide-react";
 import { useSidebar } from "../context/SidebarContext";
-import { HorizontaLDots } from "../icons";
 
 // Fungsi ambil user dari localStorage
 const getCurrentUser = () => {
@@ -243,7 +242,7 @@ const AppSidebar: React.FC = () => {
               !isExpanded && !isHovered ? "text-center" : "px-2"
             }`}
           >
-            {isExpanded || isHovered || isMobileOpen ? "Menu Utama" : <HorizontaLDots className="w-5 h-5 mx-auto" />}
+            {isExpanded || isHovered || isMobileOpen ? "Menu Utama" : <MoreHorizontal className="w-5 h-5 mx-auto" />}
           </h2>
           {renderMenuItems(filteredNavItems)}
         </nav>

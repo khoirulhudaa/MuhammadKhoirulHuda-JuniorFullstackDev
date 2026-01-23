@@ -91,10 +91,9 @@ export default function ProductTable({
                         className={`text-sm font-medium transition ${
                           product.stock > 0
                             ? "text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300"
-                            : "text-gray-400 cursor-not-allowed opacity-60"
+                            : "text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 cursor-pointer"
                         }`}
-                        disabled={product.stock === 0} // optional: nonaktifkan tombol jika stok 0
-                        title={product.stock === 0 ? "Stok habis" : "Jual 1 unit"}
+                        title={product.stock === 0 ? "Stok habis – klik untuk melihat pesan" : "Jual 1 unit"}
                       >
                         Jual
                       </button>
