@@ -1,10 +1,10 @@
+import { Eye, EyeClosed } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
-import { toast } from "sonner";
-import { Eye, EyeClosed, EyeClosedIcon, EyeIcon } from "lucide-react";
 
 // Ganti sesuai environment (development / production)
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5050";
@@ -82,10 +82,10 @@ export default function SignInForm() {
         <div className="relative top-[-10px]">
           <div className="mb-5 sm:mb-8">
             <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
-              Masuk ke Dashboard
+              Masuk ke
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Masukkan email dan kata sandi untuk mengakses dashboard
+              Masukkan email dan kata sandi untuk mengakses
             </p>
           </div>
 
