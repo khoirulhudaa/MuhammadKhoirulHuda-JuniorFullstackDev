@@ -1,4 +1,3 @@
-// components/ProductTable.tsx
 import { Eye, Plus } from "lucide-react";
 import Button from "../../../components/ui/button/Button";
 import { Product } from "../types/product";

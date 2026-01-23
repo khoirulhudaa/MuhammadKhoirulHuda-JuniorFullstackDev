@@ -53,13 +53,13 @@ export default function ProductManagement() {
       <ProductTable
         products={products}
         canSell={canSell}
-        isAdmin={isAdmin}                    // ← kirimkan ini
+        isAdmin={isAdmin}                  
         onViewDetail={(product) => {
           setSelectedProduct(product);
-          setIsDetailOpen(true);             // ← ini yang mengontrol modal
+          setIsDetailOpen(true);            
         }}
         onSell={handleSell}
-        onAddClick={() => setIsAddOpen(true)} // ← callback untuk tombol Tambah
+        onAddClick={() => setIsAddOpen(true)} 
       />
     );
   }

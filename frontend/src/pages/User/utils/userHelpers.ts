@@ -1,4 +1,3 @@
-// src/utils/userHelpers.ts
 import { User } from "../types/user";
 
 export const roleLabels: Record<User["role"], string> = {

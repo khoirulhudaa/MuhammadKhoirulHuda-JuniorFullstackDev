@@ -1,8 +1,7 @@
 import { X } from "lucide-react";
-import Button from "../../../components/ui/button/Button"; // sesuaikan path
 import Label from "../../../components/form/Label";
-import { formatPrice, formatDate } from "../utils/productHelpers";
 import { Product } from "../types/product";
+import { formatDate, formatPrice } from "../utils/productHelpers";
 
 type Props = {
   isOpen: boolean;
@@ -16,8 +15,6 @@ export default function ProductDetailModal({
   isOpen,
   onClose,
   product,
-  canSell,
-  onSell,
 }: Props) {
   if (!isOpen || !product) return null;
 
@@ -53,15 +50,6 @@ export default function ProductDetailModal({
             <p className="text-lg mt-1">{formatDate(product.created_at)}</p>
           </div>
         </div>
-
-        {canSell && product.stock > 0 && (
-          <Button
-            onClick={() => onSell(product)}
-            className="w-full mt-8 bg-green-600 hover:bg-green-700"
-          >
-            Jual 1 Unit
-          </Button>
-        )}
       </div>
     </div>
   );

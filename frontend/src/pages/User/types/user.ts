@@ -1,4 +1,3 @@
-// src/types/user.ts
 export interface User {
   id: number;
   name: string;
@@ -7,7 +6,7 @@ export interface User {
   phone?: string;
   address?: string;
   status: "ACTIVE" | "INACTIVE";
-  joinDate: string; // created_at dari backend
+  joinDate: string; 
 }
 
 export type UserRole = User["role"];

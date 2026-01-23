@@ -4,7 +4,7 @@ import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
 import { toast } from "sonner";
-import { EyeClosedIcon, EyeIcon } from "lucide-react";
+import { Eye, EyeClosed, EyeClosedIcon, EyeIcon } from "lucide-react";
 
 // Ganti sesuai environment (development / production)
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5050";
@@ -131,9 +131,9 @@ export default function SignInForm() {
                   disabled={loading}
                 >
                   {showPassword ? (
-                    <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                    <Eye className="text-black size-5" />
                   ) : (
-                    <EyeClosedIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                    <EyeClosed className="text-black size-5" />
                   )}
                 </button>
               </div>
